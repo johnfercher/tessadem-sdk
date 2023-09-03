@@ -23,16 +23,17 @@ type client struct {
 }
 
 func (c *client) GetArea(ctx context.Context, areaRequest *AreaRequest) (*AreaResponse, error) {
+	proportions := areaRequest.GetProportions()
 	topX := areaRequest.Northeast.X
 	topY := areaRequest.Northeast.Y
 	bottomX := areaRequest.Southwest.X
 	bottomY := areaRequest.Southwest.Y
-	rows := areaRequest.SquareSize
-	cols := areaRequest.SquareSize
+	rows := proportions.X
+	cols := proportions.Y
 	unit := areaRequest.Units
 	mode := Area
 
-	apiUrl := fmt.Sprintf("https://tessadem.com/api/elevation?key=%s&locations=%f,%f|%f,%f&mode=%s&units=%s&rows=%d&columns=%d", c.apiKey, topX, topY, bottomX, bottomY, mode, unit, rows, cols)
+	apiUrl := fmt.Sprintf("https://tessadem.com/api/elevation?key=%s&locations=%f,%f|%f,%f&mode=%s&units=%s&rows=%d&columns=%d", c.apiKey, topX, topY, bottomX, bottomY, mode, unit, int(rows), int(cols))
 
 	request, err := http.NewRequest("GET", apiUrl, nil)
 	if err != nil {
