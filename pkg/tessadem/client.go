@@ -23,11 +23,12 @@ type client struct {
 }
 
 func (c *client) GetArea(ctx context.Context, areaRequest *AreaRequest) (*AreaResponse, error) {
+	//areaRequest.Square()
 	proportions := areaRequest.GetProportions()
-	topX := areaRequest.Northeast.X
-	topY := areaRequest.Northeast.Y
-	bottomX := areaRequest.Southwest.X
-	bottomY := areaRequest.Southwest.Y
+	topX := areaRequest.Northeast().X
+	topY := areaRequest.Northeast().Y
+	bottomX := areaRequest.Southwest().X
+	bottomY := areaRequest.Southwest().Y
 	rows := proportions.X
 	cols := proportions.Y
 	unit := areaRequest.Units
